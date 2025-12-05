@@ -1,0 +1,36 @@
+-- Expiry Alert Trigger
+CREATE OR REPLACE TRIGGER EXPIRY_ALERT_TRIGGER
+AFTER INSERT OR UPDATE ON MEDICINES
+FOR EACH ROW
+DECLARE
+    DAYS_LEFT NUMBER;
+BEGIN
+    DAYS_LEFT := :NEW.EXPIRY_DATE - SYSDATE;
+    IF DAYS_LEFT <= 30 THEN
+        INSERT INTO ALERTS (ALERT_ID, MEDICINE_ID, ALERT_TYPE, ALERT_MESSAGE)
+        VALUES (
+            ALERTS_SEQ.NEXTVAL,
+            :NEW.MEDICINE_ID,
+            'EXPIRY',
+            'Medicine "' || :NEW.NAME || '" will expire in ' || DAYS_LEFT || ' days.'
+        );
+    END IF;
+END;
+/
+
+-- Restock Alert Trigger
+CREATE OR REPLACE TRIGGER RESTOCK_ALERT_TRIGGER
+AFTER UPDATE ON MEDICINES
+FOR EACH ROW
+BEGIN
+    IF :NEW.QUANTITY < :NEW.REORDER_LEVEL THEN
+        INSERT INTO ALERTS (ALERT_ID, MEDICINE_ID, ALERT_TYPE, ALERT_MESSAGE)
+        VALUES (
+            ALERTS_SEQ.NEXTVAL,
+            :NEW.MEDICINE_ID,
+            'RESTOCK',
+            'Medicine "' || :NEW.NAME || '" is below reorder level. Restock required.'
+        );
+    END IF;
+END;
+/
