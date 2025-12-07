@@ -1,36 +1,25 @@
--- Expiry Alert Trigger
-CREATE OR REPLACE TRIGGER EXPIRY_ALERT_TRIGGER
-AFTER INSERT OR UPDATE ON MEDICINES
+------------------------------------------------------------
+-- TRIGGER: AUTO-UPDATE MEDICINE STATUS ON INSERT/UPDATE
+-- Author: Uwineza Happy (ID: 27829)
+-- Purpose: Automatically update STATUS based on EXPIRY_DATE
+------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER trg_update_medicine_status
+BEFORE INSERT OR UPDATE ON MEDICINE_INVENTORY
 FOR EACH ROW
-DECLARE
-    DAYS_LEFT NUMBER;
 BEGIN
-    DAYS_LEFT := :NEW.EXPIRY_DATE - SYSDATE;
-    IF DAYS_LEFT <= 30 THEN
-        INSERT INTO ALERTS (ALERT_ID, MEDICINE_ID, ALERT_TYPE, ALERT_MESSAGE)
-        VALUES (
-            ALERTS_SEQ.NEXTVAL,
-            :NEW.MEDICINE_ID,
-            'EXPIRY',
-            'Medicine "' || :NEW.NAME || '" will expire in ' || DAYS_LEFT || ' days.'
-        );
+    -- If expiry date has passed
+    IF :NEW.EXPIRY_DATE < SYSDATE THEN
+        :NEW.STATUS := 'EXPIRED';
+
+    -- If expiry date is within 30 days
+    ELSIF :NEW.EXPIRY_DATE BETWEEN SYSDATE AND (SYSDATE + 30) THEN
+        :NEW.STATUS := 'NEAR EXPIRY';
+
+    -- Otherwise, medicine is still valid
+    ELSE
+        :NEW.STATUS := 'VALID';
     END IF;
 END;
 /
 
--- Restock Alert Trigger
-CREATE OR REPLACE TRIGGER RESTOCK_ALERT_TRIGGER
-AFTER UPDATE ON MEDICINES
-FOR EACH ROW
-BEGIN
-    IF :NEW.QUANTITY < :NEW.REORDER_LEVEL THEN
-        INSERT INTO ALERTS (ALERT_ID, MEDICINE_ID, ALERT_TYPE, ALERT_MESSAGE)
-        VALUES (
-            ALERTS_SEQ.NEXTVAL,
-            :NEW.MEDICINE_ID,
-            'RESTOCK',
-            'Medicine "' || :NEW.NAME || '" is below reorder level. Restock required.'
-        );
-    END IF;
-END;
-/
