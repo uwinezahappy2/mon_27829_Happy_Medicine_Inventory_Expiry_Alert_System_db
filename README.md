@@ -1,102 +1,36 @@
-Medicine Inventory Expiry Alert System
-A PL/SQL-Based Expiry Monitoring Project
- Overview
+# Medicine Inventory & Expiry Alert System  
+### Database Project
 
-The Medicine Inventory Expiry Alert System is a PL/SQL-based project designed to help pharmacies and health centers track the expiry status of medicines.
-It automatically generates alerts for medicines that are already expired or expiring soon, ensuring safety and proper inventory management.
-
-The system uses:
-
-Oracle Database
-
-PL/SQL Stored Procedures
-
-Triggers
-
-Sequences
-
-SQL Tables for storing medicine data
-
-🗂️ Project Structure
-Medicine_Inventory_Project/
-│
-├── create_tables.sql        -- Creates all required tables
-├── create_sequence.sql      -- Creates sequence for MEDICINE_ID
-├── insert_data.sql          -- Inserts sample medicine records
-├── triggers.sql             -- Contains trigger to update expiry status
-├── procedure.sql            -- Main PL/SQL procedure to check expired medicines
-└── README.md                -- Documentation file
-
-📥 1. Create Tables
-
-This script creates the main table used in the project:
-
-MEDICINE_INVENTORY
-Includes:
-MEDICINE_ID, MEDICINE_NAME, CATEGORY, QUANTITY, EXPIRY_DATE, STATUS.
-
-Run:
-
-@create_tables.sql
-
-🔢 2. Create Sequence
-
-Used to auto-increment medicine IDs.
-
-@create_sequence.sql
-
-📌 3. Insert Sample Data
-@insert_data.sql
+## 👤 Student Information  
+- Name: Happy Uwineza  
+- Student ID: 27829  
 
 
-This data includes medicines that are:
 
-Already expired
+##  Project Overview  
+This project is a **Medicine Inventory & Expiry Alert System** designed to help pharmacies or health facilities track medicine stock levels and expiration dates.  
+It ensures early alerts for medicines that are near expiry or out of stock.
 
-Expiring soon
 
-Still safe
 
-🔔 4. Trigger: Automatic Expiry Status Update
+## 📝 Problem Statement  
+Pharmacies often struggle with expired medicines, missing stock records, and poor inventory monitoring.  
+This system ensures accurate tracking, timely expiry alerts, and organized medicine data management.
 
-The trigger automatically updates the STATUS column whenever a medicine is inserted or updated.
 
-Run:
 
-@triggers.sql
+##  Key Objectives  
+- Store and manage medicine information (name, category, manufacturer, etc.)  
+- Track stock quantities and purchase dates  
+- Automatically flag medicines nearing expiry  
+- Simplify inventory monitoring for pharmacies  
+- Improve accuracy and reduce medicine waste  
 
-🧠 5. Procedure: Expiry Alert Logic
+---
 
-This procedure checks all medicines and prints alerts in SQL Developer.
+##  Quick Start Instructions  
 
-Run:
-
-@procedure.sql
-
-▶️ How to Run the Whole Project
-
-Open SQL Developer
-
-Connect to your database
-
-Run all scripts in order:
-
-@create_tables.sql
-@create_sequence.sql
-@insert_data.sql
-@triggers.sql
-@procedure.sql
-
-📊 Output Example
-
-When you run the procedure, you may see:
-
-Medicine Paracetamol is expired!
-Medicine Amoxicillin is expiring in 5 days!
-No expired medicines found.
-
-👩‍💻 Project Author
-
-Uwineza Happy
-Software Engineering Student
-Adventist University of Central Africa (AUCA)
+### **1. Clone the Repository**
+```bash
+git clone https://github.com/uwinezahappy2/mon_27829_Happy_Medicine_Inventory_Expiry_Alert_System_db.git
+cd mon_27829_Happy_Medicine_Inventory_Expiry_Alert_System_db
